@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:strings="clr-namespace:WpfWebView.Strings"
+    xmlns:strings="clr-namespace:WpfWebView.Strings"    
     xmlns:communityToolkit="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls.WebView"
     xmlns:behaviors="clr-namespace:WpfWebView.Behaviors"
     mc:Ignorable="d"
@@ -26,9 +26,15 @@
             x:Name="webView"
             Source="{Binding Source}"
             NavigationCompleted="OnNavigationCompleted">
+            <communityToolkit:WebView.InputBindings>
+                <KeyBinding Key="F5" Command="{Binding RefreshCommand}" />
+                <KeyBinding Modifiers="Alt" Key="Left" Command="{Binding BrowserBackCommand}" />
+                <KeyBinding Modifiers="Alt" Key="Right" Command="{Binding BrowserForwardCommand}" />
+                <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding OpenInBrowserCommand}" />
+                <KeyBinding Modifiers="Ctrl" Key="Tab" Command="{Binding ReleaseFocusCommand}" />
+            </communityToolkit:WebView.InputBindings>
             <i:Interaction.Behaviors>
-                <behaviors:WebViewAcceleratorKeysBehavior
-                    WebViewInputBindings="{Binding InputBindings, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" />
+                <behaviors:WebViewAcceleratorKeysBehavior />
             </i:Interaction.Behaviors>
         </communityToolkit:WebView>
         <Grid
@@ -75,6 +81,7 @@
                 Text="{x:Static strings:Resources.WebViewPageFaildedMessage}" />
             <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <Button
+                    x:Name="refreshButton"
                     Command="{Binding RefreshCommand}"
                     Style="{StaticResource WebViewButtonStyle}"
                     ToolTip="{x:Static strings:Resources.WebViewPageRefreshButtonTooltip}">
@@ -85,7 +92,8 @@
                 <Button
                     Command="{Binding OpenInBrowserCommand}"
                     Style="{StaticResource WebViewButtonStyle}"
-                    ToolTip="{x:Static strings:Resources.WebViewPageOpenInBrowserButtonTooltip}">
+                    ToolTip="{x:Static strings:Resources.WebViewPageOpenInBrowserButtonTooltip}"
+                    LostFocus="OnLostFocus">
                     <TextBlock
                         Style="{StaticResource SmallIconStyle}"
                         Text="&#xE774;" />

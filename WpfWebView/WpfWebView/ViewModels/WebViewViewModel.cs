@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 using Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT;
@@ -23,7 +25,9 @@ namespace WpfWebView.ViewModels
         private RelayCommand _browserBackCommand;
         private RelayCommand _browserForwardCommand;
         private ICommand _openInBrowserCommand;
+        private ICommand releaseFocusCommand;
         private WebView _webView;
+        private FrameworkElement _nextFocusableElement;
 
         public string Source
         {
@@ -71,14 +75,17 @@ namespace WpfWebView.ViewModels
 
         public ICommand OpenInBrowserCommand => _openInBrowserCommand ?? (_openInBrowserCommand = new RelayCommand(OnOpenInBrowser));
 
+        public ICommand ReleaseFocusCommand => releaseFocusCommand ?? (releaseFocusCommand = new RelayCommand(OnReleaseFocus));
+
         public WebViewViewModel()
         {
             Source = DefaultUrl;
         }
 
-        public void Initialize(WebView webView)
+        public void Initialize(WebView webView, FrameworkElement nextFocusableElement)
         {
             _webView = webView;
+            _nextFocusableElement = nextFocusableElement;
         }
 
         public void OnNavigationCompleted(WebViewControlNavigationCompletedEventArgs e)
@@ -111,5 +118,8 @@ namespace WpfWebView.ViewModels
             };
             Process.Start(psi);
         }
+
+        private void OnReleaseFocus()
+            => _nextFocusableElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
     }
 }

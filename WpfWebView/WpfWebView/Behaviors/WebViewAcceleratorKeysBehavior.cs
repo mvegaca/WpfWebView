@@ -11,14 +11,6 @@ namespace WpfWebView.Behaviors
     {
         private ModifierKeys _modifierKey = ModifierKeys.None;
 
-        public InputBindingCollection WebViewInputBindings
-        {
-            get { return (InputBindingCollection)GetValue(WebViewInputBindingsProperty); }
-            set { SetValue(WebViewInputBindingsProperty, value); }
-        }
-
-        public static readonly DependencyProperty WebViewInputBindingsProperty = DependencyProperty.Register("WebViewInputBindings", typeof(InputBindingCollection), typeof(WebViewAcceleratorKeysBehavior), new PropertyMetadata(new InputBindingCollection()));
-
         public WebViewAcceleratorKeysBehavior()
         {
         }
@@ -37,9 +29,10 @@ namespace WpfWebView.Behaviors
 
         private void OnAcceleratorKeyPressed(object sender, WebViewControlAcceleratorKeyPressedEventArgs e)
         {
+
             if (e.EventType != CoreAcceleratorKeyEventType.KeyDown
                 && e.EventType != CoreAcceleratorKeyEventType.SystemKeyDown
-                && WebViewInputBindings.Count == 0)
+                && AssociatedObject.InputBindings.Count == 0)
             {
                 return;
             }
@@ -53,7 +46,7 @@ namespace WpfWebView.Behaviors
 
             if (Enum.TryParse(e.VirtualKey.ToString(), out Key key))
             {
-                foreach (KeyBinding keyBinding in WebViewInputBindings)
+                foreach (KeyBinding keyBinding in AssociatedObject.InputBindings)
                 {
                     if (_modifierKey == keyBinding.Modifiers && key == keyBinding.Key)
                     {
