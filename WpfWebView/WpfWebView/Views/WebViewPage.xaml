@@ -5,8 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:strings="clr-namespace:WpfWebView.Strings"
     xmlns:communityToolkit="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls.WebView"
+    xmlns:behaviors="clr-namespace:WpfWebView.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800">
     <Page.InputBindings>
@@ -23,7 +25,12 @@
         <communityToolkit:WebView
             x:Name="webView"
             Source="{Binding Source}"
-            NavigationCompleted="OnNavigationCompleted"/>
+            NavigationCompleted="OnNavigationCompleted">
+            <i:Interaction.Behaviors>
+                <behaviors:WebViewAcceleratorKeysBehavior
+                    WebViewInputBindings="{Binding InputBindings, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" />
+            </i:Interaction.Behaviors>
+        </communityToolkit:WebView>
         <Grid
             VerticalAlignment="Bottom"
             Grid.Row="1"
