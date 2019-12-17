@@ -120,6 +120,10 @@ namespace WpfWebView.ViewModels
         }
 
         private void OnReleaseFocus()
-            => _nextFocusableElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+        {
+            // This is a workarround to release the focus from the WebView using the Ctrl + TAB shortcut.
+            // https://docs.microsoft.com/windows/communitytoolkit/controls/wpf-winforms/webview-known-issues#user-interaction
+            _nextFocusableElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+        }
     }
 }

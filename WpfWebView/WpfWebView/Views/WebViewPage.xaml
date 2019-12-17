@@ -93,7 +93,7 @@
                     Command="{Binding OpenInBrowserCommand}"
                     Style="{StaticResource WebViewButtonStyle}"
                     ToolTip="{x:Static strings:Resources.WebViewPageOpenInBrowserButtonTooltip}"
-                    LostFocus="OnLostFocus">
+                    LostFocus="OnRefreshButtonLostFocus">
                     <TextBlock
                         Style="{StaticResource SmallIconStyle}"
                         Text="&#xE774;" />
